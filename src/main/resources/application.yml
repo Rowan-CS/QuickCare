@@ -1,0 +1,22 @@
+#端口
+server.port: 8080
+
+#Spring和数据库配置
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/qc?serverTimezone=UTC
+    username: root
+    password: 123456
+#  mybatis:
+#    logging:
+#      level:
+#        com.woniuxy.hrp.mapper: debug
+#  mapper-locations: classpath:mapper/mapper.WalletMapper
+
+#mybatis-plus
+#mybatis-plus:
+#  global-config:
+#    banner: false
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
