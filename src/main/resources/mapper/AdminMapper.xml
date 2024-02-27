@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rw.quickcare.mapper.AdminMapper">
+    <select id="getPermsById" resultMap="permission">
+        SELECT p.* FROM permission p, role_permission rp, admin_role ar, ADMIN a, ROLE r
+                   WHERE a.admin_id=ar.admin_id AND ar.role_id=rp.role_id
+                     AND ar.role_id=r.role_id AND rp.permission_id = p.permission_id
+                     AND r.role_status=1 AND permission_status=1 AND a.admin_id=#{id}
+    </select>
+    <resultMap id="permission" type="com.rw.quickcare.entity.Permission">
+        <id column="permission_id" property="id"></id>
+        <result column="permission_name" property="name"></result>
+        <result column="permission_fid" property="fid"></result>
+        <result column="permission_url" property="url"></result>
+        <result column="permission_status" property="status"></result>
+        <result column="permission_code" property="code"></result>
+    </resultMap>
+
+    <select id="getHosById" resultMap="hos">
+        SELECT h.* FROM hos h, admin_hos ah, admin a
+        WHERE a.admin_id=ah.admin_id AND h.hos_id=ah.hos_id AND h.hos_isdelete=1
+         AND a.admin_id=#{id}
+    </select>
+    <resultMap id="hos" type="com.rw.quickcare.entity.Hos">
+        <id column="hos_id" property="id"></id>
+        <result column="hos_name" property="name"></result>
+        <result column="hos_address" property="address"></result>
+        <result column="hos_tele" property="tele"></result>
+        <result column="hos_intro" property="intro"></result>
+        <result column="hos_status" property="status"></result>
+        <result column="hos_create_time" property="createTime"></result>
+        <result column="hos_isdelete" property="isDelete"></result>
+    </resultMap>
+</mapper>
