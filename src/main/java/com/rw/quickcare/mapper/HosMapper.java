@@ -1,8 +1,7 @@
 package com.rw.quickcare.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.rw.quickcare.entity.Admin;
-import com.rw.quickcare.entity.Hos;
+import com.rw.quickcare.model.entity.Hos;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -15,6 +14,8 @@ import org.apache.ibatis.annotations.Mapper;
  **/
 @Mapper
 public interface HosMapper extends BaseMapper<Hos> {
+
+
 
 
 }

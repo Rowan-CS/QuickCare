@@ -3,14 +3,13 @@ package com.rw.quickcare.service.serviceimpl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.rw.quickcare.bizException.BizException;
 import com.rw.quickcare.bizException.BizExceptionCode;
-import com.rw.quickcare.entity.DoctorSchedule;
-import com.rw.quickcare.entity.Hos;
-import com.rw.quickcare.entity.Schedule;
+import com.rw.quickcare.model.entity.DoctorSchedule;
+import com.rw.quickcare.model.entity.Schedule;
 import com.rw.quickcare.mapper.DoctorScheduleMapper;
 import com.rw.quickcare.mapper.ScheduleMapper;
 import com.rw.quickcare.service.ScheduleService;
-import com.rw.quickcare.utils.ListToPagebean;
-import com.rw.quickcare.vo.PageBean;
+import com.rw.quickcare.model.vo.PageBean;
+import com.rw.quickcare.utils.DataUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +34,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public PageBean<Schedule> getAllByPage(Integer page) {
         List<Schedule> schedules = scheduleMapper.selectList(null);
-        return ListToPagebean.listToPagebean(schedules,page,10);
+        return DataUtils.listToPagebean(schedules,page,10);
     }
 
     @Override

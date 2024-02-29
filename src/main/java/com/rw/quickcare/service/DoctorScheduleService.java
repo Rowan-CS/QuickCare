@@ -1,7 +1,7 @@
 package com.rw.quickcare.service;
 
-import com.rw.quickcare.entity.DoctorSchedule;
-import com.rw.quickcare.vo.PageBean;
+import com.rw.quickcare.model.entity.DoctorSchedule;
+import com.rw.quickcare.model.vo.PageBean;
 
 /**
  * @program: quickcare

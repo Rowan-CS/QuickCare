@@ -1,4 +1,4 @@
-package com.rw.quickcare.entity;
+package com.rw.quickcare.model.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * @program: quickcare
- * @ClassName User
+ * @ClassName Patient
  * @description:
  * @author: LRW
  * @create: 2024-02-23 00:48
@@ -19,8 +19,8 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class User {
-    @TableId(value = "user_id", type = IdType.AUTO)
+public class Patient {
+    @TableId(value = "patient_id", type = IdType.AUTO)
     private Integer id;
     private String acc;
     private String psw;

@@ -1,12 +1,10 @@
 package com.rw.quickcare.web;
 
-import com.rw.quickcare.entity.Dept;
-import com.rw.quickcare.entity.Doctor;
-import com.rw.quickcare.entity.Hos;
+import com.rw.quickcare.model.entity.Doctor;
 import com.rw.quickcare.service.DoctorService;
-import com.rw.quickcare.unityhandler.ResponseEntity;
-import com.rw.quickcare.vo.DocListVo;
-import com.rw.quickcare.vo.PageBean;
+import com.rw.quickcare.model.entity.ResponseEntity;
+import com.rw.quickcare.model.vo.hos.DocListVo;
+import com.rw.quickcare.model.vo.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -14,8 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /**
  * @program: quickcare

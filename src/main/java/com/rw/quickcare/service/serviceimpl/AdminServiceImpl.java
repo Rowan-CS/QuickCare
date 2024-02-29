@@ -1,17 +1,16 @@
 package com.rw.quickcare.service.serviceimpl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.net.NetUtil;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.rw.quickcare.bizException.BizException;
 import com.rw.quickcare.bizException.BizExceptionCode;
-import com.rw.quickcare.entity.Admin;
-import com.rw.quickcare.entity.Hos;
-import com.rw.quickcare.entity.Permission;
+import com.rw.quickcare.model.entity.Admin;
+import com.rw.quickcare.model.entity.Hos;
+import com.rw.quickcare.model.entity.Permission;
 import com.rw.quickcare.mapper.AdminMapper;
+import com.rw.quickcare.mapper.HosMapper;
 import com.rw.quickcare.service.AdminService;
-import com.rw.quickcare.utils.ListToPagebean;
-import com.rw.quickcare.vo.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,15 +29,17 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private AdminMapper adminMapper;
+    @Autowired
+    private HosMapper hosMapper;
 
     /***
-     * @description: 根据帐号和密码查询管理员
+     * @description: 管理员登录
      * @param: acc, psw
      * @return: com.rw.quickcare.entity.Admin
      * @author Lrw
      * @date: 2024/2/26 19:54
      */
-    public Admin getByAccAndPsw(String acc, String psw) {
+    public Admin login(String acc, String psw) {
         Admin admin = adminMapper.getByAccAndPsw(acc, psw);
         if (admin == null){
             throw new BizException(BizExceptionCode.ADMIN_LOGIN_FAIL);
@@ -46,28 +47,26 @@ public class AdminServiceImpl implements AdminService {
             throw new BizException(BizExceptionCode.ADMIN_BLOCKED);
         } else if(admin.getIsDel()==0){
             throw new BizException(BizExceptionCode.ADMIN_DELETED);
-        } else {
-            return admin;
         }
+        //登录成功：1 更新用户上次登录时间和上次登录ip
+        UpdateWrapper<Admin> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.set("admin_last_time", DateUtil.now()).set("admin_last_ip", NetUtil.getLocalhostStr())
+                .eq("hos_id",admin.getId());
+        adminMapper.update(null,updateWrapper);
+        // 3 获取数据和功能权限
+        List<Permission> perms = adminMapper.getPermsById(admin.getId());
+        admin.setPermissions(perms);
+        //3.1 获取数据权限
+        List<Hos> hosList;
+        if (admin.getDataScope()==1){
+            //3.1.1 系统管理员可查所有医院
+            hosList = hosMapper.selectList(null);
+        } else {
+            //3.1.2 医院管理员查部分医院
+            hosList = adminMapper.getHosById(admin.getId());
+        }
+        admin.setHos(hosList);
+        return admin;
     }
 
-    /***
-     * @description: 根据id查所有权限
-     * @param: adminId
-     * @return: java.util.List<com.rw.quickcare.entity.Permission>
-     * @author Lrw
-     * @date: 2024/2/26 23:08
-     */
-    @Override
-    public List<Permission> getPermsByAdminId(Integer adminId) {
-        List<Permission> perms = adminMapper.getPermsById(adminId);
-        return perms;
-    }
-
-    @Override
-    public PageBean<Hos> getHosByAdminIdAndPage(Integer adminId, Integer currentPage) {
-        List<Hos> list = adminMapper.getHosById(adminId);
-        PageBean<Hos> pageBean = ListToPagebean.listToPagebean(list, currentPage, 10);
-        return pageBean;
-    }
 }

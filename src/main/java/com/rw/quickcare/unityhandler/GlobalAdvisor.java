@@ -1,7 +1,9 @@
 package com.rw.quickcare.unityhandler;
 
 import com.rw.quickcare.bizException.BizException;
+import com.rw.quickcare.model.entity.ResponseEntity;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -32,17 +34,30 @@ public class GlobalAdvisor {
         return ResponseEntity.FAIL;
     }
 
-    @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    public ResponseEntity handleException(MethodArgumentNotValidException e, HttpServletRequest request) {
+//    @ExceptionHandler(value = {MethodArgumentNotValidException.class, BindException.class})
+//    public ResponseEntity handleException(MethodArgumentNotValidException e, HttpServletRequest request) {
+//        Map<String, String> result = new HashMap<>();
+//        BindingResult bindingResult = e.getBindingResult();
+//        log.error("请求[ {} ] {} 的参数校验发生错误", request.getMethod(), request.getRequestURL());
+//        for (ObjectError objectError : bindingResult.getAllErrors()) {
+//            FieldError fieldError = (FieldError) objectError;
+//            log.error("参数 {} = {} 校验错误：{}", fieldError.getField(), fieldError.getRejectedValue(), fieldError.getDefaultMessage());
+//            result.put(fieldError.getField(), fieldError.getDefaultMessage());
+//        }
+//        return new ResponseEntity("400","数据校验不通过",result);
+//    }
+
+    @ExceptionHandler(value = {MethodArgumentNotValidException.class, BindException.class})
+    public ResponseEntity handlerBindException(BindException exception,HttpServletRequest request) {
         Map<String, String> result = new HashMap<>();
-        BindingResult bindingResult = e.getBindingResult();
+        BindingResult bindingResult = exception.getBindingResult();
         log.error("请求[ {} ] {} 的参数校验发生错误", request.getMethod(), request.getRequestURL());
         for (ObjectError objectError : bindingResult.getAllErrors()) {
             FieldError fieldError = (FieldError) objectError;
             log.error("参数 {} = {} 校验错误：{}", fieldError.getField(), fieldError.getRejectedValue(), fieldError.getDefaultMessage());
             result.put(fieldError.getField(), fieldError.getDefaultMessage());
         }
-        return new ResponseEntity("400","数据校验不通过",result);
+        return new ResponseEntity("400","数据校验不通过");
     }
 
     @ExceptionHandler(value = BizException.class)

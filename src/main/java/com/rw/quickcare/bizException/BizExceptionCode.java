@@ -16,6 +16,8 @@ public enum BizExceptionCode{
     DELETE_DOC_FAIL("502","医生删除失败，该医生存在排班信息，不允许删除！"),
     DELETE_SCHEDULE_FAIL("502","排班班次删除失败，排班信息已存在医生排班，不允许删除！"),
     SCHEDULE_EXISTED("502","排班班次已存在"),
+    DOCTOR_SCHEDULE_EXISTED("502","操作失败，该医生已存在相同排班"),
+    DELETE_DOC_AND_SCHEDULE_FAIL("502","删除医生排班失败，该排班存在预约，不允许删除！"),
     //    USER_NAME_NULL("-1","用户名不能为空，请重新输入!"),
 //    USER_PASSWORD_NULL("-1","密码不能为空，请重新输入!"),
 //    USER_PASSWORD_WRONG("-1","密码错误,请检查后重新输入!"),

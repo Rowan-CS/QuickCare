@@ -1,10 +1,7 @@
 package com.rw.quickcare.service;
 
-import com.rw.quickcare.entity.Dept;
-import com.rw.quickcare.entity.Doctor;
-import com.rw.quickcare.vo.PageBean;
-
-import java.util.List;
+import com.rw.quickcare.model.entity.Doctor;
+import com.rw.quickcare.model.vo.PageBean;
 
 /**
  * @program: quickcare

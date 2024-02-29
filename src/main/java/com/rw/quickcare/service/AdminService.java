@@ -1,11 +1,6 @@
 package com.rw.quickcare.service;
 
-import com.rw.quickcare.entity.Admin;
-import com.rw.quickcare.entity.Hos;
-import com.rw.quickcare.entity.Permission;
-import com.rw.quickcare.vo.PageBean;
-
-import java.util.List;
+import com.rw.quickcare.model.entity.Admin;
 
 /**
  * @program: quickcare
@@ -17,9 +12,7 @@ import java.util.List;
  **/
 public interface AdminService {
 
-        Admin getByAccAndPsw(String acc, String psw);
+        Admin login(String acc, String psw);
 
-        List<Permission> getPermsByAdminId(Integer adminId);
 
-        PageBean<Hos> getHosByAdminIdAndPage(Integer adminId, Integer page);
 }

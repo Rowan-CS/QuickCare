@@ -1,9 +1,9 @@
 package com.rw.quickcare.service;
 
-import com.rw.quickcare.entity.Hos;
-import com.rw.quickcare.vo.PageBean;
-
-import java.util.List;
+import com.rw.quickcare.model.entity.Hos;
+import com.rw.quickcare.model.vo.PageBean;
+import com.rw.quickcare.model.vo.hos.HosInsertVo;
+import com.rw.quickcare.model.vo.hos.HosQueryVo;
 
 /**
  * @program: quickcare
@@ -17,6 +17,8 @@ public interface HosService {
 
      //查询所有医院
      PageBean<Hos> getAllHosByPage(Integer currentPage);
+
+     PageBean<Hos> getByConsAndPage(HosQueryVo hosQueryVo, Integer currentPage);
 
      //新增医院
      void addHos(Hos hos);
@@ -37,5 +39,8 @@ public interface HosService {
      void block(Integer hosId);
      //取消锁定
      void unblock(Integer hosId);
+
+     //根据id查医院基础信息
+     HosInsertVo getHosSetInfo(Integer id);
 
 }

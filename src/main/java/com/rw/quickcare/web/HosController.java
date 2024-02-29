@@ -1,18 +1,17 @@
 package com.rw.quickcare.web;
 
-import com.rw.quickcare.entity.Hos;
+import com.rw.quickcare.model.entity.Hos;
+import com.rw.quickcare.model.vo.hos.HosInsertVo;
+import com.rw.quickcare.model.vo.hos.HosQueryVo;
+import com.rw.quickcare.model.vo.hos.HosUpdateVo;
 import com.rw.quickcare.service.HosService;
-import com.rw.quickcare.unityhandler.ResponseEntity;
-import com.rw.quickcare.vo.PageBean;
+import com.rw.quickcare.model.entity.ResponseEntity;
+import com.rw.quickcare.model.vo.PageBean;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @program: quickcare
@@ -24,14 +23,18 @@ import java.util.List;
  **/
 @Transactional
 @RestController("hoscontroller")
+@CrossOrigin
 @RequestMapping("/api/v1/hos")
 public class HosController {
 
     @Autowired
     private HosService hosService;
 
-    @RequestMapping("/add")
-    public ResponseEntity add(@Validated @RequestBody Hos hos){
+    @PostMapping("/add")
+    public ResponseEntity add(@Validated HosInsertVo hosInsertVo){
+        System.out.println(hosInsertVo);
+        Hos hos = new Hos();
+        BeanUtils.copyProperties(hosInsertVo,hos);
         hosService.addHos(hos);
         return ResponseEntity.SUCCESS;
     }
@@ -55,7 +58,9 @@ public class HosController {
     }
 
     @RequestMapping("/update")
-    public ResponseEntity update(@Validated @RequestBody Hos hos){
+    public ResponseEntity update(@Validated HosUpdateVo hosUpdateVo){
+        Hos hos = new Hos();
+        BeanUtils.copyProperties(hosUpdateVo,hos);
         hosService.update(hos);
         return ResponseEntity.SUCCESS;
     }
@@ -70,6 +75,16 @@ public class HosController {
     public ResponseEntity unblock(@PathVariable Integer id){
         hosService.unblock(id);
         return ResponseEntity.SUCCESS;
+    }
+    @RequestMapping("/list/{curPage}")
+    public ResponseEntity getAllByPage(HosQueryVo hosQueryVo, @PathVariable Integer curPage){
+        PageBean<Hos> pageBean = hosService.getByConsAndPage(hosQueryVo,curPage);
+        return new ResponseEntity("200","查询成功",pageBean);
+    }
+    @RequestMapping("/getHospSet/{id}")
+    public ResponseEntity getHospSet(@PathVariable Integer id){
+        HosInsertVo hosSetInfo = hosService.getHosSetInfo(id);
+        return new ResponseEntity("200",hosSetInfo);
     }
 
 }

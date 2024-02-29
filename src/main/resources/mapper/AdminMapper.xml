@@ -10,7 +10,7 @@
                      AND ar.role_id=r.role_id AND rp.permission_id = p.permission_id
                      AND r.role_status=1 AND permission_status=1 AND a.admin_id=#{id}
     </select>
-    <resultMap id="permission" type="com.rw.quickcare.entity.Permission">
+    <resultMap id="permission" type="com.rw.quickcare.model.entity.Permission">
         <id column="permission_id" property="id"></id>
         <result column="permission_name" property="name"></result>
         <result column="permission_fid" property="fid"></result>
@@ -24,7 +24,7 @@
         WHERE a.admin_id=ah.admin_id AND h.hos_id=ah.hos_id AND h.hos_isdelete=1
          AND a.admin_id=#{id}
     </select>
-    <resultMap id="hos" type="com.rw.quickcare.entity.Hos">
+    <resultMap id="hos" type="com.rw.quickcare.model.entity.Hos">
         <id column="hos_id" property="id"></id>
         <result column="hos_name" property="name"></result>
         <result column="hos_address" property="address"></result>

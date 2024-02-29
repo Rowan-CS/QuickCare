@@ -1,7 +1,7 @@
 package com.rw.quickcare.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.rw.quickcare.entity.DoctorSchedule;
+import com.rw.quickcare.model.entity.DoctorSchedule;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

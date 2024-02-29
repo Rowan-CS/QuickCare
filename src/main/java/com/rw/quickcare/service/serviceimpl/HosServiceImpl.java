@@ -4,15 +4,18 @@ import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rw.quickcare.bizException.BizException;
 import com.rw.quickcare.bizException.BizExceptionCode;
-import com.rw.quickcare.entity.Dept;
-import com.rw.quickcare.entity.Hos;
+import com.rw.quickcare.model.entity.Hos;
 import com.rw.quickcare.mapper.HosMapper;
+import com.rw.quickcare.model.vo.hos.HosInsertVo;
+import com.rw.quickcare.model.vo.hos.HosQueryVo;
 import com.rw.quickcare.service.HosService;
-import com.rw.quickcare.utils.ListToPagebean;
-import com.rw.quickcare.vo.PageBean;
+import com.rw.quickcare.model.vo.PageBean;
+import com.rw.quickcare.utils.DataUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,8 +40,25 @@ public class HosServiceImpl implements HosService {
         QueryWrapper<Hos> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("hos_isdelete",1);
         IPage<Hos> iPage = hosMapper.selectPage(page, queryWrapper);
-        PageBean pageBean = ListToPagebean.iPageToPagebean(iPage, currentPage);
+        PageBean pageBean = DataUtils.iPageToPagebean(iPage, currentPage);
         return pageBean;
+    }
+
+    @Override
+    public PageBean<Hos> getByConsAndPage(HosQueryVo hosQueryVo, Integer currentPage) {
+        QueryWrapper<Hos> queryWrapper = new QueryWrapper<>();
+        if (hosQueryVo != null){
+            Hos hos = new Hos();
+            BeanUtils.copyProperties(hosQueryVo,hos);
+            // 动态条件查询 ：第一个参数 condition 用来做判断，指定该条件是否被添加到 sql 语句中
+            queryWrapper.like(StringUtils.isNotEmpty(hosQueryVo.getName()), "hos_name", hosQueryVo.getName())
+                    .eq(hosQueryVo.getLevel() != null, "hos_level", hosQueryVo.getLevel())
+                    .eq("hos_isdelete",1);
+        } else {
+            queryWrapper.eq("hos_isdelete",1);
+        }
+        List<Hos> list = hosMapper.selectList(queryWrapper);
+        return DataUtils.listToPagebean(list,currentPage,10);
     }
 
     @Override
@@ -50,7 +70,6 @@ public class HosServiceImpl implements HosService {
         }else {
             hos.setCreateTime(DateUtil.now());
             hos.setIsDelete(1);
-            hos.setStatus(1);
             hosMapper.insert(hos);
         }
     }
@@ -64,11 +83,10 @@ public class HosServiceImpl implements HosService {
 
     @Override
     public PageBean<Hos> getAllDeleted(Integer currentPage) {
-        Page<Hos> page = new Page<>(currentPage, 10);
         QueryWrapper<Hos> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("hos_isdelete",0);
-        IPage<Hos> iPage = hosMapper.selectPage(page, queryWrapper);
-        PageBean pageBean = ListToPagebean.iPageToPagebean(iPage, currentPage);
+        List<Hos> hos = hosMapper.selectList(queryWrapper);
+        PageBean pageBean = DataUtils.listToPagebean(hos, currentPage,10);
         return pageBean;
     }
 
@@ -82,7 +100,7 @@ public class HosServiceImpl implements HosService {
     @Override
     public void update(Hos hos) {
         Long count = hosMapper.selectCount(new QueryWrapper<Hos>()
-                .eq("hos_name",hos.getName()));
+                .eq("hos_name",hos.getName()).ne("hos_id",hos.getId()));
         if(count > 0){
             throw new BizException(BizExceptionCode.HOS_EXISTED);
         }else {
@@ -102,6 +120,14 @@ public class HosServiceImpl implements HosService {
         UpdateWrapper<Hos> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("hos_id",hosId).set("hos_status", 1);
         hosMapper.update(null,updateWrapper);
+    }
+
+    @Override
+    public HosInsertVo getHosSetInfo(Integer id) {
+        Hos hos = hosMapper.selectById(id);
+        HosInsertVo hosInsertVo = new HosInsertVo();
+        BeanUtils.copyProperties(hos,hosInsertVo);
+        return hosInsertVo;
     }
 
 

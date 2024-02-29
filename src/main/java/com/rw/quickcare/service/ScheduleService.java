@@ -1,9 +1,7 @@
 package com.rw.quickcare.service;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.rw.quickcare.entity.Schedule;
-import com.rw.quickcare.vo.PageBean;
-import org.springframework.stereotype.Service;
+import com.rw.quickcare.model.entity.Schedule;
+import com.rw.quickcare.model.vo.PageBean;
 
 /**
  * @program: quickcare

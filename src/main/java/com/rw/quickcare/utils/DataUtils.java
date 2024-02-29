@@ -1,9 +1,7 @@
 package com.rw.quickcare.utils;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.rw.quickcare.entity.Hos;
-import com.rw.quickcare.vo.PageBean;
+import com.rw.quickcare.model.vo.PageBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +14,7 @@ import java.util.List;
  * @create: 2024-02-27 01:24
  * @Version 1.0
  **/
-public class ListToPagebean {
+public class DataUtils {
 
     public static PageBean listToPagebean(List list, int pageNum, int pageSize){
         List pageList = new ArrayList<>();

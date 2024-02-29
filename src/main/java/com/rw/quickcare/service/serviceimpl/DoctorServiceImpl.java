@@ -1,21 +1,16 @@
 package com.rw.quickcare.service.serviceimpl;
 
-import cn.hutool.poi.excel.cell.CellSetter;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rw.quickcare.bizException.BizException;
 import com.rw.quickcare.bizException.BizExceptionCode;
-import com.rw.quickcare.entity.Dept;
-import com.rw.quickcare.entity.Doctor;
-import com.rw.quickcare.entity.DoctorSchedule;
-import com.rw.quickcare.entity.Hos;
+import com.rw.quickcare.model.entity.Doctor;
+import com.rw.quickcare.model.entity.DoctorSchedule;
 import com.rw.quickcare.mapper.DoctorMapper;
 import com.rw.quickcare.mapper.DoctorScheduleMapper;
 import com.rw.quickcare.service.DoctorService;
-import com.rw.quickcare.utils.ListToPagebean;
-import com.rw.quickcare.vo.PageBean;
+import com.rw.quickcare.model.vo.PageBean;
+import com.rw.quickcare.utils.DataUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +34,7 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public PageBean<Doctor> getByHosIdAndPage(Integer id, Integer currentPage) {
         List<Doctor> doctors = doctorMapper.getALLByHos(id);
-        PageBean pageBean = ListToPagebean.listToPagebean(doctors, currentPage, 10);
+        PageBean pageBean = DataUtils.listToPagebean(doctors, currentPage, 10);
         return pageBean;
     }
 

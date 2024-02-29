@@ -9,7 +9,7 @@
                    WHERE h.hos_id=de.hos_id AND de.dept_id=d.dept_id
                      AND h.hos_id=#{hosId}
     </select>
-    <resultMap id="doctor" type="com.rw.quickcare.entity.Doctor">
+    <resultMap id="doctor" type="com.rw.quickcare.model.entity.Doctor">
         <id column="doctor_id" property="id"></id>
         <result column="dept_id" property="deptId"></result>
         <result column="doctor_name" property="name"></result>

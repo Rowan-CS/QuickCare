@@ -1,4 +1,4 @@
-package com.rw.quickcare.unityhandler;
+package com.rw.quickcare.model.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

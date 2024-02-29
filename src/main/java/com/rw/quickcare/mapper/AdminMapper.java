@@ -1,9 +1,9 @@
 package com.rw.quickcare.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.rw.quickcare.entity.Admin;
-import com.rw.quickcare.entity.Hos;
-import com.rw.quickcare.entity.Permission;
+import com.rw.quickcare.model.entity.Admin;
+import com.rw.quickcare.model.entity.Hos;
+import com.rw.quickcare.model.entity.Permission;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -28,4 +28,5 @@ public interface AdminMapper extends BaseMapper<Admin> {
     //根据帐号和密码查管理员
     @Select("select * from admin where admin_acc=#{acc} and admin_psw=#{psw}")
     Admin getByAccAndPsw(@Param("acc") String acc, @Param("psw")String psw);
+
 }

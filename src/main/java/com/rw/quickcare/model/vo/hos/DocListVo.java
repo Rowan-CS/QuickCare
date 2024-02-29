@@ -1,4 +1,4 @@
-package com.rw.quickcare.vo;
+package com.rw.quickcare.model.vo.hos;
 
 import lombok.Getter;
 import lombok.Setter;

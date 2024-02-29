@@ -1,9 +1,8 @@
 package com.rw.quickcare.web;
 
-import com.rw.quickcare.entity.Dept;
-import com.rw.quickcare.entity.Hos;
+import com.rw.quickcare.model.entity.Dept;
 import com.rw.quickcare.service.DeptService;
-import com.rw.quickcare.unityhandler.ResponseEntity;
+import com.rw.quickcare.model.entity.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;

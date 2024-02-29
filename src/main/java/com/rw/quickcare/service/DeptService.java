@@ -1,6 +1,8 @@
 package com.rw.quickcare.service;
 
-import com.rw.quickcare.entity.Dept;
+import cn.hutool.core.lang.tree.Tree;
+import com.rw.quickcare.model.entity.Dept;
+import com.rw.quickcare.model.vo.hos.DeptVo;
 
 import java.util.List;
 
@@ -26,5 +28,7 @@ public interface DeptService {
     //锁定部门（不可用）
     void block(Integer id);
     void unblock(Integer id);
+    //根据医院编号，查询所有科室列表(树形结构）
+    public List<Tree<String>> getDeptTree(Integer hosId);
 
 }

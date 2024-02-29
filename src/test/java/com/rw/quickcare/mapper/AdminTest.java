@@ -1,9 +1,12 @@
 package com.rw.quickcare.mapper;
 
-import com.rw.quickcare.entity.Admin;
-import com.rw.quickcare.entity.Hos;
-import com.rw.quickcare.entity.Permission;
+import com.alibaba.fastjson.JSON;
+import com.rw.quickcare.model.entity.Hos;
+import com.rw.quickcare.model.vo.hos.DeptVo;
 import com.rw.quickcare.service.AdminService;
+import com.rw.quickcare.service.DeptService;
+import com.rw.quickcare.service.HosService;
+import com.rw.quickcare.service.UserBackEndService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +28,12 @@ import java.util.List;
 public class AdminTest {
     @Autowired
     private AdminService adminService;
-
+    @Autowired
+    private UserBackEndService userBackEndService;
+    @Autowired
+    private DeptService deptService;
+    @Autowired
+    private HosService hosService;
     @Test
     public void testSelect(){
 //        List<Permission> perms = adminService.getPermsByAdminId(2);
@@ -34,7 +42,13 @@ public class AdminTest {
 
 //        System.out.println(perms);
 
-        Admin admin = adminService.getByAccAndPsw("TOM", "tom123");
-        System.out.println(admin);
+//        Admin admin = adminService.getByAccAndPsw("TOM", "tom123");
+//        System.out.println(admin);
+//        UserListVo user = new UserListVo();
+//        user.setName("A");
+//        PageBean<User> data = userBackEndService.getUsersByCondition(user,1);
+//        System.out.println(data);
+        hosService.block(1);
+
     }
 }

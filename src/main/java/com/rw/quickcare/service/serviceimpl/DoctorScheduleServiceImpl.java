@@ -1,11 +1,17 @@
 package com.rw.quickcare.service.serviceimpl;
 
-import com.rw.quickcare.entity.DoctorSchedule;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.rw.quickcare.bizException.BizException;
+import com.rw.quickcare.bizException.BizExceptionCode;
+import com.rw.quickcare.model.entity.DoctorSchedule;
 import com.rw.quickcare.mapper.DoctorScheduleMapper;
 import com.rw.quickcare.service.DoctorScheduleService;
-import com.rw.quickcare.vo.PageBean;
+import com.rw.quickcare.model.vo.PageBean;
+import com.rw.quickcare.utils.DataUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @program: quickcare
@@ -24,25 +30,53 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService {
 
     @Override
     public void add(DoctorSchedule doctorSchedule){
-        doctorSchedule.setResidue(doctorSchedule.getNum());
-        doctorSchedule.setStatus(1);
-        doctorScheduleMapper.insert(doctorSchedule);
+        //新增医生排班业务逻辑校验：无重复数据
+        Long count = doctorScheduleMapper.selectCount(new QueryWrapper<DoctorSchedule>()
+                .eq("doctor_id",doctorSchedule.getDoctorId())
+                .eq("schedule_id",doctorSchedule.getScheduleId())
+                .eq("doctor_schedule_date",doctorSchedule.getDate()));
+        if(count > 0){
+            throw new BizException(BizExceptionCode.DOCTOR_SCHEDULE_EXISTED);
+        }else
+        {
+            doctorSchedule.setResidue(doctorSchedule.getNum());
+            doctorSchedule.setStatus(1);
+            doctorScheduleMapper.insert(doctorSchedule);
+        }
+
     }
 
     @Override
     public void update(DoctorSchedule doctorSchedule) {
-        doctorScheduleMapper.updateById(doctorSchedule);
+        //新增医生排班业务逻辑校验：无重复数据
+        Long count = doctorScheduleMapper.selectCount(new QueryWrapper<DoctorSchedule>()
+                .eq("doctor_id",doctorSchedule.getDoctorId())
+                .eq("schedule_id",doctorSchedule.getScheduleId())
+                .eq("doctor_schedule_date",doctorSchedule.getDate()));
+        if(count > 0){
+            throw new BizException(BizExceptionCode.DOCTOR_SCHEDULE_EXISTED);
+        }else {
+            doctorScheduleMapper.updateById(doctorSchedule);
+        }
     }
 
     @Override
     public void delete(Integer id) {
-        doctorScheduleMapper.deleteById(id);
+        // 删除医生排班业务逻辑校验：无预约
+        DoctorSchedule doctorSchedule = doctorScheduleMapper.selectById(id);
+        Long count = doctorScheduleMapper.selectCount(new QueryWrapper<DoctorSchedule>()
+                .ne("doctor_schedule_residue",doctorSchedule.getNum())); //可预约量不等于剩余预约数量
+        if(count > 0){
+            throw new BizException(BizExceptionCode.DELETE_DOC_AND_SCHEDULE_FAIL);
+        }else {
+            doctorScheduleMapper.deleteById(id);
+        }
     }
 
     @Override
     public PageBean<DoctorSchedule> getByDocAndPage(Integer docId, Integer curPage) {
-//        doctorScheduleMapper.
-        return null;
+        List<DoctorSchedule> list = doctorScheduleMapper.getAllByDocId(docId);
+        return DataUtils.listToPagebean(list,curPage,10);
     }
 
 

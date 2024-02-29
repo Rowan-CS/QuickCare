@@ -1,15 +1,14 @@
 package com.rw.quickcare.web;
 
-import com.rw.quickcare.entity.Admin;
-import com.rw.quickcare.entity.Hos;
+import com.rw.quickcare.model.entity.Admin;
 import com.rw.quickcare.service.AdminService;
 import com.rw.quickcare.service.HosService;
-import com.rw.quickcare.vo.AdminLoginVo;
+import com.rw.quickcare.model.vo.admin.AdminLoginVo;
+import com.rw.quickcare.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import com.rw.quickcare.unityhandler.ResponseEntity;
-import java.util.List;
+import com.rw.quickcare.model.entity.ResponseEntity;
 
 
 /**
@@ -22,6 +21,7 @@ import java.util.List;
  **/
 @Transactional
 @RestController("admincontroller")
+@CrossOrigin
 @RequestMapping("/api/v1/admin")
 public class AdminController {
 
@@ -37,23 +37,54 @@ public class AdminController {
      * @author Lrw
      * @date: 2024/2/26 20:59
      */
-    @RequestMapping("/login/{page}")
-    public ResponseEntity login(@RequestBody AdminLoginVo adminLoginVo, @PathVariable Integer page){
-        //1 校验帐号密码
-        Admin admin = adminService.getByAccAndPsw(adminLoginVo.getAcc(), adminLoginVo.getPsw());
-        //2 管理员授权
-        //2.1 功能（菜单）权限
-        admin.setPermissions(adminService.getPermsByAdminId(admin.getId()));
-        //2.2数据权限
-            if (admin.getDataScope()==1){
-                //2.2.1系统管理员可查所有医院
-                List<Hos> hosList = hosService.getAllHosByPage(page).getData();
-                admin.setHos(hosList);
-            } else {
-                //2.2 医院管理员查部分医院
-                admin.setHos(adminService.getHosByAdminIdAndPage(admin.getId(), page).getData());
-            }
+    @RequestMapping("/login")
+    public ResponseEntity login(@RequestBody AdminLoginVo adminLoginVo){
+        Admin admin = adminService.login(adminLoginVo.getAcc(), adminLoginVo.getPsw());
+//        String token = JwtUtil.sign(.getUsername(), "-1");
+//        res.setCode(Constants.STATUS_OK);
+//        res.setMessage(Constants.MESSAGE_OK);
+//        res.setData(new VoToken(token));
         return new ResponseEntity("200","登录成功",admin);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity logout(@RequestHeader("X-Token") String token){
+        // 验证token的合法和有效性
+        String tokenValue = JwtUtil.verity(token);// success:zhangsan1
+        // 获取token中的用户名
+        String username = tokenValue.replaceFirst(JwtUtil.TOKEN_SUCCESS, "");
+        // 移除session中的登录标记（或者redis中的登录标记）
+        return new ResponseEntity("200","logout success");
+    }
+
+    @GetMapping("/info")
+    public ResponseEntity info(@RequestParam("token") String token){
+        // 验证token的合法和有效性
+//        String tokenValue = JwtUtil.verity(token);// success:zhangsan1
+//        if(tokenValue != null && tokenValue.startsWith(JwtUtil.TOKEN_SUCCESS)) {
+//            // 如果ok-》返回需要的用户信息
+//            // zhangsan1
+//            String username = tokenValue.replaceFirst(JwtUtil.TOKEN_SUCCESS, "");
+//
+//            //下面的应该是从数据库中拿到的，现在写死了
+////            VoUser user = this.userService.searchUserByUserName(username);
+//            VoUserInfo info = new VoUserInfo();
+//            info.setAvatar("https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
+//            info.setIntroduction("测试用户");
+//            info.setName(username);
+//            //给用户设定角色
+//            List<String> roles = Arrays.asList("tmnl");
+//            info.setRoles(roles);
+//            res.setData(info);
+//            res.setMessage(Constants.MESSAGE_OK);
+//            res.setCode(Constants.STATUS_OK);
+//        }else {
+//            // 否则：500
+//            res.setCode(Constants.STATUS_FAIL);
+//            res.setMessage(Constants.MESSAGE_FAIL);
+//        }
+
+        return new ResponseEntity("200");
     }
 
 

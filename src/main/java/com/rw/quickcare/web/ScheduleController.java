@@ -1,10 +1,9 @@
 package com.rw.quickcare.web;
 
-import com.rw.quickcare.entity.Hos;
-import com.rw.quickcare.entity.Schedule;
+import com.rw.quickcare.model.entity.Schedule;
 import com.rw.quickcare.service.ScheduleService;
-import com.rw.quickcare.unityhandler.ResponseEntity;
-import com.rw.quickcare.vo.PageBean;
+import com.rw.quickcare.model.entity.ResponseEntity;
+import com.rw.quickcare.model.vo.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @program: quickcare
  * @ClassName ScheduleController
- * @description:
+ * @description:排班管理  -> 排班设置
  * @author: LRW
  * @create: 2024-02-27 22:18
  * @Version 1.0
