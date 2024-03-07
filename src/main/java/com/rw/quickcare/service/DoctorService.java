@@ -2,6 +2,7 @@ package com.rw.quickcare.service;
 
 import com.rw.quickcare.model.entity.Doctor;
 import com.rw.quickcare.model.vo.PageBean;
+import com.rw.quickcare.model.vo.hos.DoctorQueryVo;
 
 /**
  * @program: quickcare
@@ -14,7 +15,7 @@ import com.rw.quickcare.model.vo.PageBean;
 public interface DoctorService {
 
     //根据医院查所有医生
-    PageBean<Doctor> getByHosIdAndPage(Integer id, Integer currentPage);
+    PageBean<Doctor> getByCon(DoctorQueryVo doctorQueryVo, Integer hosId, Integer currentPage);
 
     //新增医生
     void add(Doctor doctor);

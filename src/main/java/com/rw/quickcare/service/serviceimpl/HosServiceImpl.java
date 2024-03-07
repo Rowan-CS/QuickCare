@@ -11,6 +11,7 @@ import com.rw.quickcare.bizException.BizExceptionCode;
 import com.rw.quickcare.model.entity.Hos;
 import com.rw.quickcare.mapper.HosMapper;
 import com.rw.quickcare.model.vo.hos.HosInsertVo;
+import com.rw.quickcare.model.vo.hos.HosQueryDeptVo;
 import com.rw.quickcare.model.vo.hos.HosQueryVo;
 import com.rw.quickcare.service.HosService;
 import com.rw.quickcare.model.vo.PageBean;
@@ -19,6 +20,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -128,6 +130,20 @@ public class HosServiceImpl implements HosService {
         HosInsertVo hosInsertVo = new HosInsertVo();
         BeanUtils.copyProperties(hos,hosInsertVo);
         return hosInsertVo;
+    }
+
+    @Override
+    public List<HosQueryDeptVo> getAllHosToSelectDept() {
+        QueryWrapper<Hos> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("hos_isdelete",1);
+        List<Hos> hosList = hosMapper.selectList(queryWrapper);  //将查询的list里hos对象转为vo
+        List<HosQueryDeptVo> result = new ArrayList<>();
+        for (Hos hos : hosList) {
+            HosQueryDeptVo target = new HosQueryDeptVo();
+            BeanUtils.copyProperties(hos, target);
+            result.add(target);
+        }
+        return result;
     }
 
 

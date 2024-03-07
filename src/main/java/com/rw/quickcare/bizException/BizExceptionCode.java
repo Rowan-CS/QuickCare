@@ -18,11 +18,6 @@ public enum BizExceptionCode{
     SCHEDULE_EXISTED("502","排班班次已存在"),
     DOCTOR_SCHEDULE_EXISTED("502","操作失败，该医生已存在相同排班"),
     DELETE_DOC_AND_SCHEDULE_FAIL("502","删除医生排班失败，该排班存在预约，不允许删除！"),
-    //    USER_NAME_NULL("-1","用户名不能为空，请重新输入!"),
-//    USER_PASSWORD_NULL("-1","密码不能为空，请重新输入!"),
-//    USER_PASSWORD_WRONG("-1","密码错误,请检查后重新输入!"),
-//    PAGE_NUM_NULL("4001","页码不能为空"),
-//    PAGE_SIZE_NULL("4002","页数不能为空"),
 //    SEARCH_NULL("4004","搜索条件不能为空,请检查后重新输入!"),
     NO_LOGIN("3001", "用户未进行登录");
 

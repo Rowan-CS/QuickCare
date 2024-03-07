@@ -1,12 +1,10 @@
 package com.rw.quickcare.mapper;
 
+import cn.hutool.core.lang.tree.Tree;
 import com.alibaba.fastjson.JSON;
 import com.rw.quickcare.model.entity.Hos;
-import com.rw.quickcare.model.vo.hos.DeptVo;
-import com.rw.quickcare.service.AdminService;
-import com.rw.quickcare.service.DeptService;
-import com.rw.quickcare.service.HosService;
-import com.rw.quickcare.service.UserBackEndService;
+import com.rw.quickcare.model.vo.hos.HosQueryDeptVo;
+import com.rw.quickcare.service.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,27 +26,18 @@ import java.util.List;
 public class AdminTest {
     @Autowired
     private AdminService adminService;
-    @Autowired
-    private UserBackEndService userBackEndService;
-    @Autowired
-    private DeptService deptService;
-    @Autowired
-    private HosService hosService;
+//    @Autowired
+//    private UserBackEndService userBackEndService;
+//    @Autowired
+//    private DeptService deptService;
+//    @Autowired
+//    private HosService hosService;
+//    @Autowired
+//    private DoctorScheduleService doctorScheduleService;
     @Test
     public void testSelect(){
-//        List<Permission> perms = adminService.getPermsByAdminId(2);
-//        List<Hos> hos = adminService.getHosByAdminIdAndPage(1,2);
-//        System.out.println(hos);
 
-//        System.out.println(perms);
 
-//        Admin admin = adminService.getByAccAndPsw("TOM", "tom123");
-//        System.out.println(admin);
-//        UserListVo user = new UserListVo();
-//        user.setName("A");
-//        PageBean<User> data = userBackEndService.getUsersByCondition(user,1);
-//        System.out.println(data);
-        hosService.block(1);
-
+//        System.out.println(doctorScheduleService.getSchemsByDeptAndPage(2,1));
     }
 }

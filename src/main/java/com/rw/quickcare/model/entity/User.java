@@ -38,7 +38,7 @@ public class User {
     @TableField("user_certi_type")
     private Integer certiType;
     @TableField("user_certi_no")
-    private Integer certiNo;
+    private String certiNo;
     @TableField("user_status")
     private Integer status;
     @TableField("user_create_time")

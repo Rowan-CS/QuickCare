@@ -1,11 +1,20 @@
 package com.rw.quickcare.mapper;
 
 import cn.hutool.core.net.NetUtil;
+import com.rw.quickcare.model.entity.Admin;
+import com.rw.quickcare.model.entity.Reservation;
+import com.rw.quickcare.model.vo.admin.AdminListVo;
+import com.rw.quickcare.model.vo.admin.AdminQueryVo;
+import com.rw.quickcare.model.vo.reservation.ReservationCountQueryVo;
+import com.rw.quickcare.model.vo.reservation.ReservationCountVo;
+import com.rw.quickcare.model.vo.reservation.ReservationQueryVo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.List;
 
 /**
  * @program: quickcare
@@ -21,21 +30,21 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class MapperTest {
     @Autowired
     private AdminMapper adminMapper;
-
+//    @Autowired
+//    private ReservationMapper reservationMapper;
 
 
     @Test
     public void testSelect(){
         System.out.println("----- selectAll method test ------");
-//        Admin admin = adminMapper.selectById(1);
-//        List<Admin> admins = adminMapper.selectList(null);
-//        Assert.isTrue(5 == adminList.size(), "");
-//        adminList.forEach(System.out::println);
-//        System.out.println(admins);
-//        System.out.println(NetUtil.getLocalhostStr());
 
-
-
+        Admin admin = adminMapper.getInfoById(1);
+        System.out.println("---------------医院有：----------------");
+        System.out.println(admin.getHos());
+        System.out.println("---------------角色有：----------------");
+        System.out.println(admin.getRoles());
+        System.out.println("---------------权限有：----------------");
+        System.out.println(admin.getPermissions());
     }
 
 

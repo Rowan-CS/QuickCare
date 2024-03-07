@@ -1,14 +1,13 @@
 package com.rw.quickcare.utils;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.interfaces.DecodedJWT;
+import cn.hutool.core.date.DateField;
+import cn.hutool.core.date.DateTime;
+import cn.hutool.jwt.JWT;
+import cn.hutool.jwt.JWTPayload;
+import cn.hutool.jwt.JWTUtil;
 
-import java.io.UnsupportedEncodingException;
-import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @program: quickcare
@@ -19,57 +18,52 @@ import java.util.HashMap;
  * @Version 1.0
  **/
 public class JwtUtil {
-    public static final String TOKEN_LOGIN_NAME = "loginName";
-    public static final String TOKEN_LOGIN_ID = "userId";
-    public static final String TOKEN_SUCCESS = "success:";
-    public static final String TOKEN_FAIL = "fail:";
     /**
      * 过期时间为一天
-     * TODO 正式上线更换为15分钟
      */
-    private static final long EXPIRE_TIME = 24*60*60*1000;
+    private static final int EXPIRE_TIME = 24*60;
 
     /**
      * token私钥
      */
-    private static final String TOKEN_SECRET = "joijsdfjlsjfljfljl5135313135";
+    private static final String TOKEN_SECRET = "jieyiappointmentplantform";
 
     /**
      * 生成签名,15分钟后过期
-     * @param username
-     * @param userId
+     * @param id
+     * @param account
      * @return
      */
-    public static String sign(String username,String userId) throws UnsupportedEncodingException {
+    public static  String createJWT(int id,String account){
+        DateTime now = DateTime.now();
+        DateTime newTime = now.offsetNew(DateField.MINUTE, EXPIRE_TIME);
+        Map<String,Object> payload = new HashMap<String,Object>();
+        //签发时间
+        payload.put(JWTPayload.ISSUED_AT, now);
         //过期时间
-        Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
-        //私钥及加密算法
-        Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
-        //设置头信息
-        HashMap<String, Object> header = new HashMap<>(2);
-        header.put("typ", "JWT");
-        header.put("alg", "HS256");
-        //附带username和userID生成签名
-        return JWT.create().withHeader(header).withClaim(TOKEN_LOGIN_NAME,username)
-                .withClaim(TOKEN_LOGIN_ID,userId).withExpiresAt(date).sign(algorithm);
+        payload.put(JWTPayload.EXPIRES_AT, newTime);
+        //生效时间
+        payload.put(JWTPayload.NOT_BEFORE, now);
+        //载荷
+        payload.put("id", id);
+        payload.put("account", account);
+        String key = TOKEN_SECRET;
+        String token = JWTUtil.createToken(payload, key.getBytes());
+        return token;
     }
-
-
-    public static String verity(String token){
-        String result = TOKEN_SUCCESS;
-        try {
-            Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
-            JWTVerifier verifier = JWT.require(algorithm).build();
-            DecodedJWT jwt = verifier.verify(token);
-            result += jwt.getClaims().get(TOKEN_LOGIN_NAME).asString();
-            return result; // success:username
-        } catch (IllegalArgumentException e) {
-            return TOKEN_FAIL+e.getMessage();
-        } catch (JWTVerificationException e) {
-            return TOKEN_FAIL+e.getMessage();
-        }catch (Exception e){
-            return TOKEN_FAIL+e.getMessage();
+    //校验jwt
+    public static  boolean verifyJWT(String jwt){
+        try{
+            cn.hutool.jwt.JWT token = JWTUtil.parseToken(jwt);//解析
+            boolean verifyKey = token.setKey(TOKEN_SECRET.getBytes()).verify();
+            return verifyKey;}
+        catch (Exception e){
+            return false;
         }
-
+    }
+    //解析jwt并获取参数
+    public static Object getInfo(String jwt, String name) {
+        JWT token = JWTUtil.parseToken(jwt);
+        return token.getPayload(name);
     }
 }

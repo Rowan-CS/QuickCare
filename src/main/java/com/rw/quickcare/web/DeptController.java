@@ -1,17 +1,18 @@
 package com.rw.quickcare.web;
 
+import cn.hutool.core.lang.tree.Tree;
 import com.rw.quickcare.model.entity.Dept;
+import com.rw.quickcare.model.vo.hos.HosQueryDeptVo;
 import com.rw.quickcare.service.DeptService;
 import com.rw.quickcare.model.entity.ResponseEntity;
+import com.rw.quickcare.service.HosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @program: quickcare
@@ -24,16 +25,25 @@ import java.util.List;
 @Transactional
 @RestController("deptcontroller")
 @RequestMapping("/api/v1/dept")
+@CrossOrigin
 public class DeptController {
 
     @Autowired
     private DeptService deptService;
+    @Autowired
+    private HosService hosService;
 
     @RequestMapping("/selectByHos/{hosId}")
     public ResponseEntity selectByHos(@PathVariable Integer hosId){
-        List<Dept> depts = deptService.getByHosId(hosId);
-        return new ResponseEntity("200","查询成功",depts);
+        List<Tree<String>> deptTree = deptService.getDeptTree(hosId);
+        return new ResponseEntity("200","查询成功",deptTree);
     }
+    @RequestMapping("/getHos")
+    public ResponseEntity selectHos(){
+        List<HosQueryDeptVo> hosList = hosService.getAllHosToSelectDept();
+        return new ResponseEntity("200","查询成功",hosList);
+    }
+
 
     @RequestMapping("/add/{hosId}")
     public ResponseEntity add(@Validated @RequestBody Dept dept, @PathVariable Integer hosId){

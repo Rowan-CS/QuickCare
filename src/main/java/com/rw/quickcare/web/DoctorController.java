@@ -1,17 +1,14 @@
 package com.rw.quickcare.web;
 
 import com.rw.quickcare.model.entity.Doctor;
+import com.rw.quickcare.model.vo.hos.DoctorQueryVo;
 import com.rw.quickcare.service.DoctorService;
 import com.rw.quickcare.model.entity.ResponseEntity;
-import com.rw.quickcare.model.vo.hos.DocListVo;
 import com.rw.quickcare.model.vo.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @program: quickcare
@@ -23,14 +20,15 @@ import org.springframework.web.bind.annotation.RestController;
  **/
 @Transactional
 @RestController("doctorcontroller")
+@CrossOrigin
 @RequestMapping("/api/v1/doc")
 public class DoctorController {
     @Autowired
     private DoctorService doctorService;
 
-    @RequestMapping("/selectAllByHos")
-    public ResponseEntity selectAll(@RequestBody DocListVo docListVo){
-        PageBean<Doctor> pageBean = doctorService.getByHosIdAndPage(docListVo.getHosId(), docListVo.getPage());
+    @PostMapping("/selectList/{hosId}/{page}")
+    public ResponseEntity selectList(@RequestBody DoctorQueryVo doctorQueryVo, @PathVariable Integer hosId, @PathVariable Integer page){
+        PageBean<Doctor> pageBean = doctorService.getByCon(doctorQueryVo,hosId, page);
         return new ResponseEntity("200","查询成功",pageBean);
     }
 

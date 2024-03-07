@@ -47,6 +47,8 @@ public class Doctor {
     private String intro;
     @TableField("doctor_status")
     private Integer status;
+    @TableField(exist = false, select = false)
+    private String deptName;
 
     @TableField(exist = false, select = false)
     private List<Schedule> schedules;

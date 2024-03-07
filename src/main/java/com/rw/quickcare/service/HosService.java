@@ -3,7 +3,10 @@ package com.rw.quickcare.service;
 import com.rw.quickcare.model.entity.Hos;
 import com.rw.quickcare.model.vo.PageBean;
 import com.rw.quickcare.model.vo.hos.HosInsertVo;
+import com.rw.quickcare.model.vo.hos.HosQueryDeptVo;
 import com.rw.quickcare.model.vo.hos.HosQueryVo;
+
+import java.util.List;
 
 /**
  * @program: quickcare
@@ -42,5 +45,11 @@ public interface HosService {
 
      //根据id查医院基础信息
      HosInsertVo getHosSetInfo(Integer id);
+
+     //查询所有医院（为了查询科室）
+     List<HosQueryDeptVo> getAllHosToSelectDept();
+
+     //根据
+//     List<HosQueryDeptVo> getHosToSelectDept();
 
 }

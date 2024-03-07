@@ -1,5 +1,6 @@
 package com.rw.quickcare.model.entity;
 
+import cn.hutool.core.lang.tree.Tree;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -60,4 +61,6 @@ public class Admin {
     private List<Hos> hos;  //数据权限
     @TableField(exist = false, select = false)
     private List<Role> roles; //角色
+//    @TableField(exist = false, select = false)
+//    private List<Tree<String>> menus; //菜单
 }

@@ -1,11 +1,17 @@
 package com.rw.quickcare.web;
 
+import com.rw.quickcare.model.entity.ResponseEntity;
+import com.rw.quickcare.model.entity.Role;
 import com.rw.quickcare.service.PermissionService;
 import com.rw.quickcare.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * @program: quickcare
@@ -17,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
  **/
 @Transactional
 @RestController("rolecontroller")
+@CrossOrigin
 @RequestMapping("/api/v1/role")
 public class RoleController {
     @Autowired
@@ -25,5 +32,10 @@ public class RoleController {
     @Autowired
     private PermissionService permissionService;
 
+    @RequestMapping("/getAll")
+    public ResponseEntity delete(){
+        List<Role> all = roleService.getAll();
+        return new ResponseEntity("200",all);
+    }
 
 }

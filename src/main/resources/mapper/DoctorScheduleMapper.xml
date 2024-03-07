@@ -20,5 +20,36 @@
         <result column="doctor_status" property="status"></result>
     </resultMap>
 
+    <select id="getSchemDetail" resultMap="DoctorScheduleVo">
+        SELECT d.doctor_name, d.doctor_title, d.doctor_fee, d.doctor_intro, s.schedule_name, ds.doctor_schedule_date, ds.doctor_schedule_num, ds.doctor_schedule_residue,ds.doctor_schedule_status
+        FROM doctor d, dept de, SCHEDULE s, doctor_schedule ds
+        WHERE de.dept_id=d.dept_id AND d.doctor_id=ds.doctor_id
+          AND s.schedule_id=ds.schedule_id
+          AND de.dept_id =#{deptId}  AND ds.doctor_schedule_date =#{date}
+    </select>
+    <resultMap id="DoctorScheduleVo" type="com.rw.quickcare.model.vo.schedule.DocSchemQueryVo">
+        <result column="doctor_name" property="docName"></result>
+        <result column="doctor_title" property="docTitle"></result>
+        <result column="doctor_fee" property="docFee"></result>
+        <result column="doctor_intro" property="docIntro"></result>
+        <result column="schedule_name" property="scheName"></result>
+        <result column="doctor_schedule_date" property="date"></result>
+        <result column="doctor_schedule_num" property="num"></result>
+        <result column="doctor_schedule_residue" property="residue"></result>
+        <result column="doctor_schedule_status" property="status"></result>
+    </resultMap>
+
+    <select id="getSchemByDept" resultMap="DeptScheduleMap">
+        select ds.doctor_schedule_date,SUM(ds.doctor_schedule_residue) AS availablenum ,sum(ds.doctor_schedule_num) as reservednum
+        from doctor d, dept de, schedule s, doctor_schedule ds
+        WHERE de.dept_id=d.dept_id AND d.doctor_id=ds.doctor_id
+          and s.schedule_id=ds.schedule_id AND de.dept_id =#{deptId}
+        group by ds.doctor_schedule_date order by ds.doctor_schedule_date
+    </select>
+    <resultMap id="DeptScheduleMap" type="com.rw.quickcare.model.vo.schedule.DeptSchemQueryVo">
+        <result column="doctor_schedule_date" property="date"></result>
+        <result column="reservednum" property="reservedNum"></result>
+        <result column="availablenum" property="availableNum"></result>
+    </resultMap>
 
 </mapper>

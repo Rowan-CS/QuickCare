@@ -1,16 +1,14 @@
 package com.rw.quickcare.web;
 
 import com.rw.quickcare.model.entity.User;
+import com.rw.quickcare.model.vo.user.UserListVo;
+import com.rw.quickcare.model.vo.user.UserQueryVo;
 import com.rw.quickcare.service.UserBackEndService;
 import com.rw.quickcare.model.entity.ResponseEntity;
 import com.rw.quickcare.model.vo.PageBean;
-import com.rw.quickcare.model.vo.user.UserListVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @program: quickcare
@@ -22,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  **/
 @Transactional
 @RestController("adminusercontroller")
+@CrossOrigin
 @RequestMapping("/api/v1/adminuser")
 public class UserBackEndController {
 
@@ -34,9 +33,9 @@ public class UserBackEndController {
         return new ResponseEntity("200",all);
     }
 
-    @RequestMapping("/getByCon")
-    public ResponseEntity getByCon(@RequestBody UserListVo userListVo, @PathVariable Integer page){
-        PageBean<User> pageBean = userBackEndService.getUsersByCondition(userListVo, page);
+    @PostMapping("/getByCon/{page}/{limit}")
+    public ResponseEntity getByCon(@RequestBody UserQueryVo userQueryVo, @PathVariable Integer page,@PathVariable Integer limit){
+        PageBean<User> pageBean = userBackEndService.getUsersByCondition(userQueryVo, page,limit);
         return new ResponseEntity("200",pageBean);
     }
 

@@ -1,6 +1,7 @@
 package com.rw.quickcare.service;
 
 import com.rw.quickcare.model.entity.Admin;
+import com.rw.quickcare.model.vo.admin.AdminInfoVo;
 
 /**
  * @program: quickcare
@@ -13,6 +14,8 @@ import com.rw.quickcare.model.entity.Admin;
 public interface AdminService {
 
         Admin login(String acc, String psw);
+
+        AdminInfoVo getInfo(Integer id);
 
 
 }

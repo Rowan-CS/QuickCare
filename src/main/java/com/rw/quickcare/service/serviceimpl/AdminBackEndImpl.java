@@ -1,13 +1,19 @@
 package com.rw.quickcare.service.serviceimpl;
 
 import cn.hutool.core.date.DateUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.rw.quickcare.model.entity.Admin;
 import com.rw.quickcare.mapper.AdminMapper;
-import com.rw.quickcare.service.AdminBackEndService;
+import com.rw.quickcare.model.entity.Hos;
+import com.rw.quickcare.model.entity.User;
 import com.rw.quickcare.model.vo.admin.AdminListVo;
+import com.rw.quickcare.model.vo.admin.AdminQueryVo;
+import com.rw.quickcare.service.AdminBackEndService;
 import com.rw.quickcare.model.vo.PageBean;
 import com.rw.quickcare.utils.DataUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,11 +42,11 @@ public class AdminBackEndImpl implements AdminBackEndService {
     }
 
     @Override
-    public PageBean<Admin> getByCondition(AdminListVo adminListVo, Integer curPage) {
-
-        return null;
+    public PageBean<AdminListVo> getByCondition(AdminQueryVo adminQueryVo, Integer curPage) {
+        List<AdminListVo> list = adminMapper.selectAdminsByCondition(adminQueryVo);
+        PageBean pageBean = DataUtils.listToPagebean(list, curPage, 10);
+        return pageBean;
     }
-
     @Override
     public void add(Admin admin) {
         admin.setCreateTime(DateUtil.now());

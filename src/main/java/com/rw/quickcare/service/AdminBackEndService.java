@@ -1,8 +1,9 @@
 package com.rw.quickcare.service;
 
 import com.rw.quickcare.model.entity.Admin;
-import com.rw.quickcare.model.vo.admin.AdminListVo;
 import com.rw.quickcare.model.vo.PageBean;
+import com.rw.quickcare.model.vo.admin.AdminListVo;
+import com.rw.quickcare.model.vo.admin.AdminQueryVo;
 
 /**
  * @program: quickcare
@@ -18,7 +19,7 @@ public interface AdminBackEndService {
     PageBean<Admin> getAll(Integer curPage);
 
     //分页多条件查询管理员用户
-    PageBean<Admin> getByCondition(AdminListVo adminListVo, Integer curPage);
+    PageBean<AdminListVo> getByCondition(AdminQueryVo adminQueryVo, Integer curPage);
 
     //新增
     void add(Admin admin);

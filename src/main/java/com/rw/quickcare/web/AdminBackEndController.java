@@ -1,16 +1,15 @@
 package com.rw.quickcare.web;
 
 import com.rw.quickcare.model.entity.Admin;
+import com.rw.quickcare.model.vo.admin.AdminListVo;
+import com.rw.quickcare.model.vo.admin.AdminQueryVo;
 import com.rw.quickcare.service.AdminBackEndService;
 import com.rw.quickcare.model.entity.ResponseEntity;
 import com.rw.quickcare.model.vo.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @program: quickcare
@@ -22,15 +21,16 @@ import org.springframework.web.bind.annotation.RestController;
  **/
 @Transactional
 @RestController("adminmanagecontroller")
+@CrossOrigin
 @RequestMapping("/api/v1/adminmanage")
 public class AdminBackEndController {
 
     @Autowired
     private AdminBackEndService adminBackEndService;
 
-    @RequestMapping("/select/{page}")
-    public ResponseEntity select(@PathVariable Integer curPage){
-        PageBean<Admin> pageBean = adminBackEndService.getAll(curPage);
+    @PostMapping("/select/{page}")
+    public ResponseEntity select(@RequestBody AdminQueryVo adminQueryVo, @PathVariable Integer page){
+        PageBean<AdminListVo> pageBean = adminBackEndService.getByCondition(adminQueryVo,page);
         return new ResponseEntity("200",pageBean);
     }
 

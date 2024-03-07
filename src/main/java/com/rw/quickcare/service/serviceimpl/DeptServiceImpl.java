@@ -8,19 +8,17 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.rw.quickcare.bizException.BizException;
 import com.rw.quickcare.bizException.BizExceptionCode;
+import com.rw.quickcare.mapper.HosMapper;
 import com.rw.quickcare.model.entity.Dept;
 import com.rw.quickcare.model.entity.Doctor;
 import com.rw.quickcare.mapper.DeptMapper;
 import com.rw.quickcare.mapper.DoctorMapper;
-import com.rw.quickcare.model.vo.hos.DeptVo;
+import com.rw.quickcare.model.entity.Hos;
 import com.rw.quickcare.service.DeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -34,6 +32,8 @@ import java.util.stream.Collectors;
 @Service("DeptService")
 public class DeptServiceImpl implements DeptService {
 
+    @Autowired
+    private HosMapper hosMapper;
     @Autowired
     private DeptMapper deptMapper;
 
@@ -107,63 +107,28 @@ public class DeptServiceImpl implements DeptService {
 
     @Override
     public List<Tree<String>> getDeptTree(Integer hosId) {
-        //创建List集合，用于最终数据封装
-        List<DeptVo> result = new ArrayList<>();
-
-        //根据医院编号，查询所有科室信息
+        //1.获取医院所有科室信息
         QueryWrapper<Dept> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("hos_id", hosId);
         List<Dept> deptList = deptMapper.selectList(queryWrapper);
-        return null;
+        //2.配置
+        TreeNodeConfig config = new TreeNodeConfig();
+        config.setIdKey("id");                              //默认id，可以不设置
+        config.setParentIdKey("fid");                       //父id
+        config.setNameKey("name");                           //分类名称
+        config.setDeep(2);                                  //最大递归深度
+        config.setWeightKey("id");
+        //3.转树
+        List<Tree<String>> treeList = TreeUtil.build(deptList, "0", config, (object, treeNode) -> {
+            treeNode.setId(String.valueOf(object.getId()));
+            treeNode.setName(object.getName());
+            treeNode.setParentId(String.valueOf(object.getFid()));
+            treeNode.putExtra("location", object.getLocation());
+            treeNode.putExtra("intro",object.getIntro());
+            treeNode.putExtra("status", String.valueOf(object.getStatus()));
+        });
+        return treeList;
     }}
 
-//        List<Dept> pDept =
-//                deptList.stream().filter(dept -> dept.getFid()==null).collect(Collectors.toList());
-//        for(Dept dept : pDept){
-//
-//        }
-//        TreeNodeConfig treeNodeConfig = new TreeNodeConfig();
-//        treeNodeConfig.setIdKey("id");
-//        treeNodeConfig.setParentIdKey("fid");
-//        treeNodeConfig.setNameKey("name");
-//
-//        List<Tree<String>> treeList = TreeUtil.build(deptList, "0", treeNodeConfig, (map, tree) -> {
-//            tree.setId(String.valueOf(map.getId()));
-//            tree.setName(map.getName());
-//            tree.setParentId(String.valueOf(map.getFid()));
-//        });
-//        return treeList;
-//    }
-
-//        //根据大科室编号bigcode进行分组，获取每个大科室里面的下级子科室
-//        Map<Integer, List<Dept>> departmentMap =
-//                depts.stream().collect(Collectors.groupingBy(x -> Optional.ofNullable(x.getFid()).orElse(0)));
-//        //遍历map集合
-//        for(Map.Entry<Integer,List<Dept>> entry : departmentMap.entrySet()){
-//            //大科室编号
-//            Integer bigcode = entry.getKey();
-//            //大科室编号对应的全部数据
-//            List<Dept> department1List = entry.getValue();
-//
-//            //封装大科室
-//            DeptVo departmentVo1 = new DeptVo();
-//            departmentVo1.setId(bigcode);
-//            departmentVo1.setName(department1List.get(0).getName());
-//            //封装小科室
-//            List<DeptVo> children = new ArrayList<>();
-//            for(Dept department : department1List){
-//                DeptVo departmentVo2 = new DeptVo();
-//                departmentVo2.setId(department.getId());
-//                departmentVo2.setName(department.getName());
-//                //封装到List集合
-//                children.add(departmentVo2);
-//            }
-//            //把小科室list集合放到大科室children里面
-//            departmentVo1.setChildren(children);
-//
-//            //放到最终result里面
-//            result.add(departmentVo1);
-//        }
-//        return result;
 
 

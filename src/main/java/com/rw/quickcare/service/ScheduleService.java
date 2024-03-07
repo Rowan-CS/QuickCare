@@ -3,6 +3,8 @@ package com.rw.quickcare.service;
 import com.rw.quickcare.model.entity.Schedule;
 import com.rw.quickcare.model.vo.PageBean;
 
+import java.util.List;
+
 /**
  * @program: quickcare
  * @InterfaceName ScheduleService
@@ -23,5 +25,8 @@ public interface ScheduleService {
 
     //删除
     void delete(Integer id);
+
+    //查所有排班时间段（实现新增医生排班功能）
+    List<Schedule> getAll();
 
 }

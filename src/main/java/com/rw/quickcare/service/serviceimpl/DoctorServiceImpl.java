@@ -8,6 +8,7 @@ import com.rw.quickcare.model.entity.Doctor;
 import com.rw.quickcare.model.entity.DoctorSchedule;
 import com.rw.quickcare.mapper.DoctorMapper;
 import com.rw.quickcare.mapper.DoctorScheduleMapper;
+import com.rw.quickcare.model.vo.hos.DoctorQueryVo;
 import com.rw.quickcare.service.DoctorService;
 import com.rw.quickcare.model.vo.PageBean;
 import com.rw.quickcare.utils.DataUtils;
@@ -32,11 +33,11 @@ public class DoctorServiceImpl implements DoctorService {
     private DoctorScheduleMapper doctorScheduleMapper;
 
     @Override
-    public PageBean<Doctor> getByHosIdAndPage(Integer id, Integer currentPage) {
-        List<Doctor> doctors = doctorMapper.getALLByHos(id);
-        PageBean pageBean = DataUtils.listToPagebean(doctors, currentPage, 10);
-        return pageBean;
-    }
+    public PageBean<Doctor> getByCon(DoctorQueryVo doctorQueryVo, Integer hosId, Integer currentPage){
+        List<Doctor> doctors = doctorMapper.selectByCondition(doctorQueryVo,hosId);
+            PageBean pageBean = DataUtils.listToPagebean(doctors, currentPage, 10);
+            return pageBean;
+        }
 
     @Override
     public void add(Doctor doctor) {

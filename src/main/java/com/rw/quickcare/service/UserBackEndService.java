@@ -3,6 +3,7 @@ package com.rw.quickcare.service;
 import com.rw.quickcare.model.entity.User;
 import com.rw.quickcare.model.vo.PageBean;
 import com.rw.quickcare.model.vo.user.UserListVo;
+import com.rw.quickcare.model.vo.user.UserQueryVo;
 
 /**
  * @program: quickcare
@@ -15,7 +16,7 @@ import com.rw.quickcare.model.vo.user.UserListVo;
 public interface UserBackEndService {
 
     //多条件分页查询普通用户
-    PageBean<User> getUsersByCondition(UserListVo userListVo, Integer curPage);
+    PageBean<User> getUsersByCondition(UserQueryVo userQueryVo, Integer curPage,Integer limit);
 
     //冻结用户
     void blockUserById(Integer userId);

@@ -2,6 +2,7 @@ package com.rw.quickcare.model.vo;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
  **/
 @Setter
 @Getter
+@ToString
 public class PageBean<T> {
     private List<T> data;// 当前页的数据
     private int currPageSize; //当前页的数据

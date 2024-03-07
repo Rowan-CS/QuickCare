@@ -9,6 +9,7 @@ import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 /**
  * @program: quickcare
@@ -40,4 +41,7 @@ public class Dept {
     private String location;
     @TableField("dept_status")
     private Integer status;
+
+//    @TableField(exist = false, select = false)
+//    private List<Dept> childrenList;
 }

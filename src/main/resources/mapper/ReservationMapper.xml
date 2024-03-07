@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rw.quickcare.mapper.ReservationMapper">
+    <select id="selectByHosId" resultMap="reservationMap">
+        select r.reservation_id,r.reservation_no, r.reservation_date,s.schedule_name,
+               u.user_name, d.dept_name, doc.doctor_name, r.reservation_cost,
+               r.reservation_status ,r.reservation_create_time, r.reservation_paid_time,
+               u.user_acc,u.user_mobile,u.user_mail, p.patient_name, p.patient_gender,
+               p.patient_birthdate,p.patient_certi_type,p.patient_certi_no,p.patient_phone,
+                p.patient_address,p.patient_med_no
+        from reservation r, user u, patient p, doctor_schedule ds, dept d,doctor doc, schedule s
+        where r.user_id=u.user_id and r.patient_id=p.patient_id
+          and r.doctor_schedule_id=ds.doctor_schedule_id and r.dept_id=d.dept_id
+          and r.doctor_id=doc.doctor_id and ds.schedule_id=s.schedule_id
+          and r.hos_id=#{hosId}
+    </select>
+    <select id="selectByCondition"  parameterType="com.rw.quickcare.model.vo.reservation.ReservationQueryVo" resultMap="reservationMap">
+        select r.reservation_id,r.reservation_no, r.reservation_date,s.schedule_name,
+               u.user_name, d.dept_name, doc.doctor_name, r.reservation_cost,
+               r.reservation_status ,r.reservation_create_time, r.reservation_paid_time,
+               u.user_acc,u.user_mobile,u.user_mail, p.patient_name, p.patient_gender,
+               p.patient_birthdate,p.patient_certi_type,p.patient_certi_no,p.patient_phone,
+               p.patient_address,p.patient_med_no
+        from reservation r, user u, patient p, doctor_schedule ds, dept d,doctor doc, schedule s
+        where r.user_id=u.user_id and r.patient_id=p.patient_id
+          and r.doctor_schedule_id=ds.doctor_schedule_id and r.dept_id=d.dept_id
+          and r.doctor_id=doc.doctor_id and ds.schedule_id=s.schedule_id
+          and r.hos_id=#{hosId}
+        <if test="reservation.deptId !=null">
+            and d.dept_id=#{reservation.deptId}
+        </if>
+        <if test="reservation.userName !=null and reservation.userName !=''">
+            and  u.user_name like '%${reservation.userName}%'
+        </if>
+        <if test="reservation.patientName !=null and reservation.patientName !=''">
+            and  p.patient_name like '%${reservation.patientName}%'
+        </if>
+        <if test="reservation.status !=null">
+            and r.reservation_status=#{reservation.status}
+        </if>
+        <if test="reservation.orderStartTime!=null and reservation.orderStartTime!=''">
+            and r.reservation_date &gt;= #{reservation.orderStartTime}
+        </if>
+        <if test="reservation.orderEndTime!=null and reservation.orderEndTime!=''">
+            and r.reservation_date &lt;= #{reservation.orderEndTime}
+        </if>
+    </select>
+
+    <select id="selectResCount" parameterType="com.rw.quickcare.model.vo.reservation.ReservationCountQueryVo"
+            resultType="com.rw.quickcare.model.vo.reservation.ReservationCountVo">
+        SELECT COUNT(*) AS COUNT,r.reservation_date AS reserveDate
+        FROM reservation r, hos h where r.hos_id=h.hos_id and r.reservation_status=1
+        <if test="vo.hosName != null and vo.hosname != ''">
+            and h.hos_name like '%${vo.hosName}%'
+        </if>
+        <if test="vo.reserveDateBegin != null and vo.reserveDateBegin != ''">
+            and r.reservation_date >= #{vo.reserveDateBegin}
+        </if>
+        <if test="vo.reserveDateEnd != null and vo.reserveDateEnd != ''">
+            and r.reservation_date &lt;= #{vo.reserveDateEnd}
+        </if>
+        GROUP BY r.reservation_date
+        ORDER BY r.reservation_date;
+    </select>
+
+    <resultMap id="reservationMap" type="com.rw.quickcare.model.entity.Reservation">
+        <id column="reservation_id" property="id"></id>
+        <result column="reservation_no" property="no"></result>
+        <result column="reservation_date" property="date"></result>
+        <result column="reservation_cost" property="cost"></result>
+        <result column="reservation_status" property="status"></result>
+        <result column="reservation_create_time" property="createTime"></result>
+        <result column="reservation_paid_time" property="paidTime"></result>
+        <association property="doctorSchedule" javaType="com.rw.quickcare.model.entity.DoctorSchedule">
+            <id column="doctor_schedule_id" property="id"></id>
+            <association property="schedule" javaType="com.rw.quickcare.model.entity.Schedule">
+                <id column="schedule_id" property="id"></id>
+                <result column="schedule_name" property="name"></result>
+            </association>
+        </association>
+        <association property="user" javaType="com.rw.quickcare.model.entity.User">
+            <result column="user_name" property="name"></result>
+            <result column="user_acc" property="acc"></result>
+            <result column="user_mobile" property="mobile"></result>
+            <result column="user_mail" property="mail"></result>
+        </association>
+        <association property="dept" javaType="com.rw.quickcare.model.entity.Dept">
+            <id column="dept_id" property="id"></id>
+            <result column="dept_name" property="name"></result>
+        </association>
+        <association property="doctor" javaType="com.rw.quickcare.model.entity.Doctor">
+            <result column="doctor_name" property="name"></result>
+        </association>
+        <association property="patient" javaType="com.rw.quickcare.model.entity.Patient">
+            <result column="patient_name" property="name"></result>
+            <result column="patient_gender" property="gender"></result>
+            <result column="patient_birthdate" property="birthDate"></result>
+            <result column="patient_certi_type" property="certiType"></result>
+            <result column="patient_certi_no" property="certiNo"></result>
+            <result column="patient_phone" property="phone"></result>
+            <result column="patient_address" property="address"></result>
+            <result column="patient_med_no" property="medNo"></result>
+        </association>
+    </resultMap>
+
+
+</mapper>

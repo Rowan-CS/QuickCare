@@ -77,4 +77,10 @@ public class ScheduleServiceImpl implements ScheduleService {
         }
 
     }
+
+    @Override
+    public List<Schedule> getAll() {
+        List<Schedule> schedules = scheduleMapper.selectList(null);
+        return schedules;
+    }
 }

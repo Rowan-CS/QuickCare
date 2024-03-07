@@ -4,14 +4,24 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.rw.quickcare.mapper.DoctorMapper">
-    <select id="getALLByHos" resultMap="doctor">
-        SELECT d.* FROM doctor d, dept de, hos h
-                   WHERE h.hos_id=de.hos_id AND de.dept_id=d.dept_id
-                     AND h.hos_id=#{hosId}
+    <select id="selectByCondition" parameterType="com.rw.quickcare.model.vo.hos.DoctorQueryVo" resultMap="doctor">
+        SELECT d.*, de.dept_name FROM doctor d, dept de, hos h
+        WHERE h.hos_id=de.hos_id AND de.dept_id=d.dept_id
+        AND h.hos_id=#{hosId}
+        <if test="vo.deptId !=null">
+            and d.dept_id=#{vo.deptId}
+        </if>
+        <if test="vo.name !=null and vo.name !=''">
+            and  d.doctor_name like '%${vo.name}%'
+        </if>
+        <if test="vo.title !=null and vo.title !=''">
+            and  d.doctor_title = '${vo.title}'
+        </if>
     </select>
     <resultMap id="doctor" type="com.rw.quickcare.model.entity.Doctor">
         <id column="doctor_id" property="id"></id>
         <result column="dept_id" property="deptId"></result>
+        <result column="dept_name" property="deptName"></result>
         <result column="doctor_name" property="name"></result>
         <result column="doctor_gender" property="gender"></result>
         <result column="doctor_title" property="title"></result>

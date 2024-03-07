@@ -1,8 +1,6 @@
 package com.rw.quickcare.model.vo.hos;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.List;
 
@@ -17,8 +15,9 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class DeptVo {
+@NoArgsConstructor
+@AllArgsConstructor
+public class HosQueryDeptVo {
     private Integer id;
     private String name;
-    private List<DeptVo> children;  //下级节点
 }

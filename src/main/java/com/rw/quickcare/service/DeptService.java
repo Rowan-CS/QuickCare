@@ -2,9 +2,9 @@ package com.rw.quickcare.service;
 
 import cn.hutool.core.lang.tree.Tree;
 import com.rw.quickcare.model.entity.Dept;
-import com.rw.quickcare.model.vo.hos.DeptVo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @program: quickcare
@@ -29,6 +29,6 @@ public interface DeptService {
     void block(Integer id);
     void unblock(Integer id);
     //根据医院编号，查询所有科室列表(树形结构）
-    public List<Tree<String>> getDeptTree(Integer hosId);
+     List<Tree<String>> getDeptTree(Integer hosId);
 
 }

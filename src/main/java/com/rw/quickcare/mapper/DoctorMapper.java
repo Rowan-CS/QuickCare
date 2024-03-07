@@ -2,7 +2,9 @@ package com.rw.quickcare.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.rw.quickcare.model.entity.Doctor;
+import com.rw.quickcare.model.vo.hos.DoctorQueryVo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -16,5 +18,5 @@ import java.util.List;
  **/
 @Mapper
 public interface DoctorMapper extends BaseMapper<Doctor> {
-    List<Doctor> getALLByHos(Integer hosId);
+    List<Doctor> selectByCondition(@Param("vo")DoctorQueryVo doctorQueryVo, @Param("hosId")Integer hosId);
 }

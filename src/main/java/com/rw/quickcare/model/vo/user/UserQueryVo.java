@@ -15,14 +15,10 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class UserListVo {
+public class UserQueryVo {
     private String name;
-    private String mobile;
-    private String mail;
-    private String birthDate;
-    private Integer certiType;
-    private String certiNo;
     private Integer status;
-    private String createTime;
+    private String createStartTime;
+    private String createEndTime;
 
 }

@@ -1,6 +1,7 @@
 package com.rw.quickcare.model.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,16 +23,24 @@ import java.util.List;
 public class Patient {
     @TableId(value = "patient_id", type = IdType.AUTO)
     private Integer id;
-    private String acc;
-    private String psw;
-    private String mobile;
-    private String mail;
+    @TableField("user_id")
+    private Integer userId;
+    @TableField("patient_name")
+    private String name;
+    @TableField("patient_gender")
+    private String gender;
+    @TableField("patient_birthdate")
     private String birthDate;
+    @TableField("patient_certi_type")
     private Integer certiType;
-    private Integer certiNo;
-    private Integer status;
-    private String createTime;
-
-    private List<Patient> patients;
-    private List<Reservation> reservations;
+    @TableField("patient_certi_no")
+    private String certiNo;
+    @TableField("patient_phone")
+    private String phone;
+    @TableField("patient_address")
+    private String address;
+    @TableField("patient_med_no")
+    private String medNo;
+    @TableField("patient_is_default")
+    private Integer isDefault;
 }

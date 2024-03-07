@@ -1,5 +1,6 @@
 package com.rw.quickcare.model.vo.hos;
 
+import com.rw.quickcare.model.entity.Dept;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -17,5 +18,10 @@ import lombok.ToString;
 @ToString
 public class DocListVo {
     private Integer hosId;
-    private Integer page;
+    private String deptName;
+    private String gender;
+    private String title;
+    private Integer fee;
+    private String intro;
+    private String status;
 }
